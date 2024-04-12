@@ -193,3 +193,4 @@ backend/.pytype/
 
 # Cython debug symbols
 backend/cython_debug/
+/.env
