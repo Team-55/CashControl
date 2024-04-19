@@ -1,3 +1,13 @@
 from django.contrib import admin
 
-# Register your models here.
+from backend.cash import models
+
+for model in (
+        models.ToDo,
+        models.Category,
+        models.Card,
+        models.Revenue,
+        models.Cost,
+        models.Wallet,
+):
+    admin.site.register(model)
