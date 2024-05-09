@@ -36,6 +36,9 @@ from drf_spectacular.views import (
 urlpatterns = [
                   path("admin/",
                        admin.site.urls, ),
+                  path("api/v1/cash/",
+                       include("cash.urls",
+                               namespace="cash"), ),
                   path("api/v1/user/",
                        include("user.urls",
                                namespace="user"), ),
