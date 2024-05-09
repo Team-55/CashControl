@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from backend.cash import models
+from . import models
 
 for model in (
-        models.ToDo,
+        models.Plan,
         models.Category,
         models.Card,
         models.Revenue,
