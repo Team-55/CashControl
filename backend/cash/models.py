@@ -16,7 +16,7 @@ def create_custom_path(instance: str,
                         )
 
 
-class ToDo(models.Model):
+class Plan(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     start_date = models.DateField()
@@ -32,30 +32,37 @@ class Category(models.Model):
     color = models.CharField(max_length=20, null=True)
 
 
+class Bank(models.Model):
+    name = models.CharField(max_length=255)
+    icon = models.ImageField(null=True, upload_to=create_custom_path)
+
+
 class Card(models.Model):
     name = models.CharField(max_length=255)
     card_number = models.CharField(max_length=255)
     balance = models.FloatField()
     token = models.CharField(max_length=255)
     icon = models.ImageField(null=True, upload_to=create_custom_path)
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE)
 
 
-class Revenue(models.Model):
+class Transaction(models.Model):
     name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    description = models.TextField(blank=True, null=True)
+    date = models.DateField(auto_now_add=True)
+    cards = models.ManyToManyField(Card)
+
+    class Meta:
+        abstract = True
+
+
+class Revenue(Transaction):
     amount = models.FloatField()
-    description = models.TextField(blank=True, null=True)
-    date = models.DateField(auto_now_add=True)
-    cards = models.ManyToManyField(Card)
 
 
-class Cost(models.Model):
-    name = models.CharField(max_length=255)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+class Cost(Transaction):
     price = models.FloatField()
-    description = models.TextField(blank=True, null=True)
-    date = models.DateField(auto_now_add=True)
-    cards = models.ManyToManyField(Card)
 
 
 class Wallet(models.Model):
@@ -66,4 +73,4 @@ class Wallet(models.Model):
     cards = models.ManyToManyField(Card, related_name='wallets')
     costs = models.ManyToManyField(Cost, related_name='wallets')
     revenues = models.ManyToManyField(Revenue, related_name='wallets')
-    todos = models.ManyToManyField(ToDo, related_name='wallets')
+    plans = models.ManyToManyField(Plan, related_name='wallets')
